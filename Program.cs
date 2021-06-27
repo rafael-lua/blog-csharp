@@ -37,7 +37,7 @@ namespace Blog
                     // create role
                     roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
                 }
-            
+
                 if (!context.Users.Any(u => u.UserName == "admin"))
                 {
                     // create a admin
