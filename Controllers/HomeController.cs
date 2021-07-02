@@ -1,4 +1,5 @@
 ﻿using Blog.Data;
+using Blog.Data.FileManager;
 using Blog.Data.Repository;
 using Blog.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace Blog.Controllers
     public class HomeController : Controller
     {
         private IRepository _repo;
+        private IFileManager _fileManager;
 
-        public HomeController(IRepository repo)
+        public HomeController(IRepository repo, IFileManager fileManager)
         {
             _repo = repo;
+            _fileManager = fileManager;
         }
 
         public IActionResult Index()
@@ -31,6 +34,14 @@ namespace Blog.Controllers
             var post = _repo.GetPost(id);
 
             return View(post);
+        }
+
+        // Dynamic images use this stream pattern, with routing and controller. Static images can be served directly.
+        [HttpGet("/Image/{imageName}")]
+        public IActionResult Image(string imageName)
+        {
+            var mime = imageName.Substring(imageName.LastIndexOf(".") + 1); // get only the type without the dot
+            return new FileStreamResult(_fileManager.ImageStream(imageName), $"image/{mime}");
         }
     }
 }

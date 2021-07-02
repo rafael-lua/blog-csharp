@@ -1,11 +1,12 @@
-﻿@model Post
+﻿@model PostViewModel
 
 @{
 
 }
 
 <div>
-    <form asp-controller="Home" asp-action="Edit" method="post">
+    @*the enctype is very import here, or the data sent will be null!*@
+    <form asp-controller="Panel" asp-action="Edit" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="Id" />
         <div>
             <label>Title</label>
@@ -14,6 +15,10 @@
         <div>
             <label>Body</label>
             <input asp-for="Body" />
+        </div>
+        <div>
+            <label>Image</label>
+            <input asp-for="Image" />
         </div>
         <input type="submit" value="Submit" />
     </form>
